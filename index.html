@@ -10,15 +10,14 @@
     <script>
         var canvas = new fabric.Canvas('canvas');
 
-        var rect = new fabric.Rect({
-            top: 100,
-            left: 100,
-            width: 60,
-            height: 70,
-            fill: 'red'
+        var circle = new fabric.Circle({
+            radius: 20, fill: 'pink', left: 100, top: 100
+        });
+        var triangle = new fabric.Triangle({
+            width: 20, height: 30, fill: 'orange', left: 50, top: 50
         });
 
-        canvas.add(rect);
+        canvas.add(circle, triangle);
     </script>
 </body>
 

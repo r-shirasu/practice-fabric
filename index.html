@@ -10,19 +10,84 @@
     <script>
         var canvas = new fabric.Canvas('canvas');
 
-        fabric.Image.fromURL('./img/hebi.png', function (img) {
-            var img1 = img.scale(0.1).set({ left: 200, top: 100 });
+        var Point = fabric.util.createClass({
+            initialize: function (x, y) {
+                this.x = x || 0;
+                this.y = y || 0;
+            },
+            toString: function () {
+                return this.x + '/' + this.y;
+            }
+        })
 
-            fabric.Image.fromURL('./img/hebi.png', function (img) {
-                var img2 = img.scale(0.1).set({ left: 175, top: 175 });
+        var point = new Point(10, 20);
 
-                fabric.Image.fromURL('./img/hebi.png', function (img) {
-                    var img3 = img.scale(0.1).set({ left: 250, top: 250 });
+        point.x; // 10
+        point.y; // 20
 
-                    canvas.add(new fabric.Group([img1, img2, img3], { left: 100, top: 100 }))
+        point.toString() // "10/20"
+
+        var ColoredPoint = fabric.util.createClass(Point, {
+            initialize: function (x, y, color) {
+                this.callSuper("initialize", x, y);
+                this.color = color || "#000";
+            },
+            toString: function () {
+                return this.callSuper('toString') + ' (color: ' + this.color + ')';
+            }
+        })
+
+        var redPoint = new ColoredPoint(15, 33, '#f55');
+
+        redPoint.x; // 15
+        redPoint.y; // 33
+        redPoint.color; // "#f55"
+
+        redPoint.toString(); "15/33 (color: #f55)"
+
+        var LabeledRect = fabric.util.createClass(fabric.Rect, {
+
+            type: 'labeledRect',
+            // initialize can be of type function(options) or function(property, options), like for text.
+            // no other signatures allowed.
+            initialize: function (options) {
+                options || (options = {});
+
+                this.callSuper('initialize', options);
+                this.set('label', options.label || '');
+            },
+
+            toObject: function () {
+                return fabric.util.object.extend(this.callSuper('toObject'), {
+                    label: this.get('label')
                 });
-            });
+            },
+
+            _render: function (ctx) {
+                this.callSuper('_render', ctx);
+
+                ctx.font = '20px Helvetica';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.label, -this.width / 2, -this.height / 2 + 20);
+            }
         });
+
+        var labeledRect = new LabeledRect({
+            width: 100,
+            height: 50,
+            left: 100,
+            top: 100,
+            label: 'test',
+            fill: '#faa'
+        });
+
+        labeledRect.set({
+            label: 'trololo',
+            fill: '#aaf',
+            rx: 10,
+            ry: 10
+        });
+        canvas.add(labeledRect);
     </script>
 </body>
 

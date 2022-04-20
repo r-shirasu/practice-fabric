@@ -9,15 +9,35 @@
     <script src="lib/fabric.js"></script>
     <script>
         var canvas = new fabric.Canvas('canvas');
-
         var circle = new fabric.Circle({
-            radius: 20, fill: 'pink', left: 100, top: 100
-        });
-        var triangle = new fabric.Triangle({
-            width: 20, height: 30, fill: 'orange', left: 50, top: 50
+            radius: 100,
+            fill: '#eef',
+            scaleY: 0.5,
+            originX: 'center',
+            originY: 'center'
         });
 
-        canvas.add(circle, triangle);
+        var text = new fabric.Text('hello world', {
+            fontSize: 30,
+            originX: 'center',
+            originY: 'center'
+        });
+
+        var group = new fabric.Group([circle, text], {
+            left: 150,
+            top: 100,
+            angle: -10
+        });
+
+        // in order to use setFill named setter, you need to add the optional named setter/getter
+        // code from src/util/named_accessors.mixins.js
+        group.item(0).set('fill', 'red');
+        group.item(1).set({
+            text: 'trololo',
+            fill: 'white'
+        });
+
+        canvas.add(group);
     </script>
 </body>
 
